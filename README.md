@@ -1,5 +1,8 @@
 # Subscribr Application
 
+For YoutTube video demo and explanation, see: [Subscribr Demo and Explanation Video](https://www.youtube.com/watch?v=1xO1CIoY_48)
+
+
 Subscribr is a Dockerized full-stack application that includes the following components:
 
 - **React Frontend**: Located in the `subscribr-frontend` folder.

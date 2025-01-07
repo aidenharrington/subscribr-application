@@ -1,0 +1,9 @@
+[submodule "subscribr-frontend"]
+	path = subscribr-frontend
+	url = git@github.com:aidenharrington/subscribr-frontend.git
+[submodule "subscribr-api"]
+	path = subscribr-api
+	url = git@github.com:aidenharrington/subscribr-api.git
+[submodule "subscribr-video-uploader"]
+	path = subscribr-video-uploader
+	url = git@github.com:aidenharrington/subscribr-video-uploader.git

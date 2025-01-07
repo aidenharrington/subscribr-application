@@ -1,0 +1,73 @@
+version: '3.8'
+services:
+  subscribr-frontend:
+    build:
+      context: ./subscribr-frontend
+      dockerfile: Dockerfile
+    # environment:
+    #   - REACT_APP_API_BASE_URL=http://subscribr-api:8080      
+    env_file: ./subscribr-frontend/.env.docker
+    volumes:
+      - ./subscribr-frontend:/app
+      - /app/node_modules
+    ports:
+      - 3000:80
+    depends_on:
+      - subscribr-api
+    networks:
+      - subscribr-network
+
+  subscribr-api:
+    build:
+      context: ./subscribr-api
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    volumes:
+      - ./subscribr-api:/app
+    ports:
+      - 8080:8080
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+    depends_on:
+      - db
+      - subscribr-video-uploader
+    networks:
+      - subscribr-network
+
+  subscribr-video-uploader:
+    build:
+      context: ./subscribr-video-uploader
+      dockerfile: Dockerfile
+    volumes:
+      - ./subscribr-video-uploader:/app
+    ports:
+      - 9000:9000
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/postgres
+    depends_on:
+      - db
+    networks:
+      - subscribr-network
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: .fT-d?%59J3x#zR
+      POSTGRES_DB: postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d/
+    networks:
+      - subscribr-network
+
+networks:
+  subscribr-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
